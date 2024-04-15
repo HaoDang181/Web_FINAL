@@ -1,0 +1,23 @@
+:root {
+    --blue : rgb(99, 99, 145);
+    --blueBright: #6394bf
+}
+body{
+    background-color: var(--blueBright);
+
+}
+.container {
+    max-width: 1200px; 
+    margin: 50px auto; 
+    padding: 15px;   
+    border-radius: 10px;
+    box-shadow: 0 20px 35px rgb(0, 0, 1);  
+    background-color: aliceblue;
+}
+#signInButton {
+    background-color:var(--blueBright);
+    font-size: 1.1rem;
+    padding: 8px 0;
+    border-radius: 5px;
+    width: 100%;
+}
