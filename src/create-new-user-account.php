@@ -11,6 +11,8 @@ if (isset($_POST['fullname'], $_POST['email'])) {
     $username = strstr($email, '@', true);
     $role = "sales";
     $password = $username;
+    $isActive = false;
+    $isLock = false;
 
     // Generate a 32-character hexadecimal token
     $token = bin2hex(random_bytes(16));
@@ -20,8 +22,8 @@ if (isset($_POST['fullname'], $_POST['email'])) {
     $expiration = date('Y-m-d H:i:s', time() + 60);
 
     // Prepare the SQL statement to insert a new user account
-    $sql = "INSERT INTO useraccount (username, email, password, role, fullname, token, expiration) 
-    VALUES (:username, :email, :password, :role, :fullname, :token, :expiration)";
+    $sql = "INSERT INTO user_account (username, email, password, role, fullname, token, expiration, is_active, is_lock) 
+    VALUES (:username, :email, :password, :role, :fullname, :token, :expiration, :isActive, :isLock)";
 
     // Prepare and execute the SQL statement with PDO
     $stmt = $pdo->prepare($sql);
@@ -32,6 +34,8 @@ if (isset($_POST['fullname'], $_POST['email'])) {
     $stmt->bindParam(':fullname', $fullname);
     $stmt->bindParam(':token', $token);
     $stmt->bindParam(':expiration', $expiration);
+    $stmt->bindParam(':isActive', $isActive);
+    $stmt->bindParam(':isLock', $isLock);
 
     //Set email body
     $mail->Subject = "Test mail";
