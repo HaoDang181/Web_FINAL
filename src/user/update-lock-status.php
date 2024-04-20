@@ -1,6 +1,6 @@
 <?php
 
-require_once 'db-connect.php';
+require_once '../db-connect.php';
 
 if(isset($_POST['username'], $_POST['lock_status'])){
     $username = $_POST['username'];

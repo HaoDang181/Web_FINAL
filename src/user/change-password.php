@@ -1,5 +1,5 @@
 <?php
-require_once 'db-connect.php';
+require_once '../db-connect.php';
 
 if (isset($_POST['username'], $_POST['password'])) {
     $username = $_POST['username'];

@@ -1,6 +1,6 @@
 <?php
 
-require_once 'db-connect.php';
+require_once '../db-connect.php';
 
 if(isset($_GET['username'])){
     $username = $_GET['username'];

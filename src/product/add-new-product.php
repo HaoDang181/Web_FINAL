@@ -1,6 +1,6 @@
 <?php
 // Include the database connection file
-require_once 'db-connect.php';
+require_once '../db-connect.php';
 
 // Check if required parameters are provided
 if (isset($_POST['name'], $_POST['import_price'], $_POST['retail_price'], $_POST['category'])) {

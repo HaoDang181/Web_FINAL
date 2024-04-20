@@ -1,8 +1,8 @@
 <?php
-require_once 'db-connect.php';
+require_once '../db-connect.php';
 
 // Prepare the SQL statement to select all data from the table
-$sql = "SELECT * FROM product";
+$sql = "SELECT username, fullname, is_active, is_lock FROM user_account";
 
 // Prepare and execute the SQL statement with PDO
 $stmt = $pdo->query($sql);

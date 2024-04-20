@@ -1,6 +1,6 @@
 <?php
 // Include the database connection file
-require_once 'db-connect.php';
+require_once '../db-connect.php';
 require 'send-email.php';
 
 // Check if required parameters are provided
