@@ -1,6 +1,7 @@
 <?php
 // Include the database connection file
 require_once '../db-connect.php';
+require '../common/rest-api.php';
 
 // Check if required parameters are provided
 if (isset($_GET['phone'], $_POST['name'], $_POST['address'])) {
@@ -8,23 +9,21 @@ if (isset($_GET['phone'], $_POST['name'], $_POST['address'])) {
     $name = $_POST['name'];
     $phone = $_GET['phone'];
     $address = $_POST['address'];
-    // Prepare the SQL statement to insert a new product
-    $sql = "INSERT INTO customer (name, phone, address) 
-            VALUES (:name, :phone, :address)";
 
-    // Prepare and execute the SQL statement with PDO
-    $stmt = $pdo->prepare($sql);
-    $stmt->bindParam(':name', $name);
-    $stmt->bindParam(':phone', $phone);
-    $stmt->bindParam(':address', $address);
+    $customer = [
+        "name" => $name,
+        "phone" => $phone,
+        "address" => $address
+    ];
 
-    // Execute the statement
-    if ($stmt->execute()) {
-        echo json_encode(array("message" => "Customer account create successfully"));
+    if (addDataToTable($pdo, 'customer', $customer)) {
+        echo 'okay';
     } else {
-        echo json_encode(array("message" => "Failed to create customer account"));
+        // If data insertion fails, return error message
+        echo json_encode(["message" => "Failed to add customer"]);
     }
 } else {
     // If required parameters are missing, return error message
-    echo json_encode(array("message" => "Missing required parameters"));
+    echo json_encode(["message" => "Missing required parameters"]);
 }
+?>

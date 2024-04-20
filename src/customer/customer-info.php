@@ -1,26 +1,17 @@
 <?php
 
 require_once '../db-connect.php';
+require '../common/rest-api.php';
 
-if(isset($_GET['phone'])){
+// Check if 'phone' parameter is set in the GET request
+if (isset($_GET['phone'])) {
+    // Get the phone number from the GET parameters
     $phone = $_GET['phone'];
-    // Prepare the SQL statement to select all data from the table
-    $sql = "SELECT * FROM customer WHERE phone = :phone";
 
-    // Prepare and execute the SQL statement with PDO
-    $stmt = $pdo->prepare($sql);
-    $stmt->bindParam(':phone', $phone);
+    $condition = ["phone" => $phone];
 
-    $stmt->execute();
-    // Check if there are any rows returned
-    if ($stmt->rowCount() > 0) {
-        // Fetch all rows as associative arrays
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        // Return the data as JSON
-        echo json_encode($rows);
-    } else {
-        // If no rows are returned, return an empty JSON array
-        echo json_encode(array("message" => "Customer's first time buying"));
-    }
+    // Call the function and echo the result
+    $customerData = getDataFromTableByCriteria($pdo, 'customer', $condition);
+    echo json_encode($customerData);
 }
+?>
