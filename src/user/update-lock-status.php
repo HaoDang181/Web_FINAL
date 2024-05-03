@@ -2,24 +2,6 @@
 
 require_once '../db-connect.php';
 
-<<<<<<< Updated upstream
-if(isset($_POST['id'], $_POST['lock_status'])){
-    $id = $_POST['id'];
-    $lock_status = $_POST['lock_status'];
-
-    echo $lock_status;
-    // Prepare the SQL statement to select all data from the table
-    $sql = "Update user_account SET is_lock = :lock_status WHERE id = :id";
-
-    // Prepare and execute the SQL statement with PDO
-    $stmt = $pdo->prepare($sql);
-    $stmt->bindParam(':lock_status', $lock_status);
-    $stmt->bindParam(':id', $id);
-
-    // Execute the statement
-    if ($stmt->execute()) {
-        echo json_encode(array("message" => "Lock status updated successfully"));
-=======
 // Get the JSON data from the request body
 $json_data = file_get_contents('php://input');
 
@@ -46,7 +28,6 @@ if ($json_data !== false) {
         } else {
             echo json_encode(array("message" => "Failed to update lock status"));
         }
->>>>>>> Stashed changes
     } else {
         // If required parameters are missing, return error message
         echo json_encode(array("message" => "Missing required parameters"));
