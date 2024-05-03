@@ -2,7 +2,11 @@
 require_once '../db-connect.php';
 
 // Prepare the SQL statement to select all data from the table
+<<<<<<< Updated upstream
 $sql = "SELECT id, email, username, fullname, is_active, is_lock FROM user_account";
+=======
+$sql = "SELECT username, fullname, email, is_active, is_lock FROM user_account";
+>>>>>>> Stashed changes
 
 // Prepare and execute the SQL statement with PDO
 $stmt = $pdo->query($sql);
