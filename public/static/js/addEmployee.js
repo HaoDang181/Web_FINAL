@@ -1,15 +1,9 @@
 document.addEventListener("DOMContentLoaded", function () {
+    let lock = 0; 
     fetchData()
     document.querySelector("#addEmployeeModal .submit").addEventListener("click", function (event) {
-        event.preventDefault();
 
-        var name = document.querySelector("#name").value;
-        var email = document.querySelector("#email").value;
-        var phone = document.querySelector("#phone").value;
-        var avatarUrl = document.querySelector("#imgInput").value;
-
-        addEmployeeToTable(avatarUrl, name, email);
-
+        
         var modal = new bootstrap.Modal(document.getElementById('addEmployeeModal'));
         modal.hide();
     });
@@ -72,7 +66,7 @@ function readInfo(avatar, name, email, phone) {
 
 function fetchData() {
     // Gửi yêu cầu POST đến endpoint /legacy/prop/add
-    fetch('/Web_FINAL-main/src/user/view-staff-list.php', {
+    fetch('/WEB-FINAL/src/user/view-staff-list.php', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
@@ -105,6 +99,9 @@ function viewStaffList(data) {
     data.forEach(user => {
         let tr = document.createElement('tr')
         let activeStatus = user.is_active === 0? "Chưa kích hoạt" : "Đã kích hoạt"
+        let lockStatus = user.is_lock ===0 ? `<button class="lock"><ion-icon class="open" name="lock-open-outline"></ion-icon></button>` : `<button class="lock"><ion-icon class ="close" name="lock-closed-outline"></ion-icon></button>`
+        lock = user.is_lock;
+        console.log(lockStatus);
         tr.innerHTML = `
         <td class="userId">${user.id}</td>
         <td>
@@ -122,7 +119,7 @@ function viewStaffList(data) {
             <button class="view" data-bs-toggle="modal" data-bs-target="#viewStaffInfo">
             <ion-icon name="eye-outline"></ion-icon>
         </button>
-        <button class="lock"><ion-icon name="lock-closed-outline"></ion-icon></button>
+        ${lockStatus}
 
             </td>`
 
@@ -135,16 +132,16 @@ function handleLock() {
     lockButton.forEach(button => {
         button.addEventListener('click' , ()=> {
             let tr = button.closest("tr")
+            let lockStatus = lock === 1 ? 0 : 1
         
-            console.log(tr.querySelector('.userId').textContent)
-            changeLockStatus(tr.querySelector('.userId').textContent)
+            changeLockStatus(tr.querySelector('.userId').textContent, lockStatus)
         })
     })
 }
 
-function changeLockStatus(userId) {
-    let data = {id:userId, lock_status: false}
-    fetch('/Web_FINAL-main/src/user/update-lock-status.php', {
+function changeLockStatus(userId, lockStatus) {
+    let data = {id:userId, lock_status : lockStatus}
+    fetch('/WEB-FINAL/src/user/update-lock-status.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -162,7 +159,7 @@ function changeLockStatus(userId) {
         })
         .then(data => {
             // Process the data returned from the server
-            window.location.reload
+            window.location.reload()
             // Do whatever you want with the data
         })
         .catch(error => {

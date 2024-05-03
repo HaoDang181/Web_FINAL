@@ -4,7 +4,6 @@ require_once '../db-connect.php';
 
 // Get the JSON data from the request body
 $json_data = file_get_contents('php://input');
-
 // Check if JSON data is received
 if ($json_data !== false) {
     // Decode the JSON data into an associative array
