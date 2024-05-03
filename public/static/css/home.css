@@ -180,6 +180,17 @@ body {
     margin-top:2px;
 }
 
+/* button add employee */
+.newUser {
+    position: absolute; /* Đặt vị trí tuyệt đối cho button */
+    padding: 10px 20px; /* Bỏ chèn nội dung button */
+    right: 20px;
+    background-color: #007bff; /* Màu nền button */
+    color: #fff; /* Màu chữ button */
+    border: none; /* Bỏ đường viền button */
+    cursor: pointer; /* Hiển thị con trỏ chuột khi di chuột qua button */
+  }
+
 /* modal */
 .modal .modal-dialog{
     max-width:400px;
@@ -297,7 +308,7 @@ form .inputField > div input{
 
 /* lock */
 .lock,
-.unclock,
+.unlock,
 .view {
     background-color: transparent;
     border: none;
@@ -307,27 +318,27 @@ form .inputField > div input{
 }
 
 .lock ion-icon,
-.unclock ion-icon,
+.unlock ion-icon,
 .view ion-icon {
     font-size: 24px;
     color: #333; /* Màu icon */
 }
 
 .lock:hover,
-.unclock:hover,
+.unlock:hover,
 .view:hover
  {
     transform: scale(1.2); /* Phóng to khi di chuột qua */
 }
 
 .lock:focus,
-.unclock:focus,
+.unlock:focus,
 .view:focus {
     transform: scale(1.2); /* Phóng to khi focus */
 }
 
 .lock:active,
-.unclock:active,
+.unlock:active,
 .view:active {
     transform: scale(0.9); /* Thu nhỏ khi được nhấn */
 }
