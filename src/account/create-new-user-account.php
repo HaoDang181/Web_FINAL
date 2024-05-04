@@ -40,7 +40,7 @@ if (isset($_POST['fullname'], $_POST['email'])) {
     //Set email body
     $mail->Subject = "Test mail";
     $mail->Body = "This is some email that contains a login link. Your default username and password are: $username and $password. 
-    <br><br> Please click <a href='http://localhost/mobilemart/src/login.php?token=$token'>here</a> to login. This link will expire in 1 minute.";
+    <br><br> Please click <a href='http://localhost/final/src/login.php?token=$token'>here</a> to login. This link will expire in 1 minute.";
 
     // Execute the statement
     if ($stmt->execute()) {

@@ -1,19 +1,22 @@
 <?php
+session_start();
+
 require_once '../db-connect.php';
 require '../common/rest-api.php';
 
-if (isset($_POST['username'], $_POST['password'])) {
-    $username = $_POST['username'];
+if (isset($_SESSION['user_id'], $_POST['password'])) {
+    $userID = $_SESSION['user_id'];
     $password = $_POST['password'];
 
     $new_password = password_hash($password, PASSWORD_BCRYPT);
 
-    $updateUserValue = ["password" => $new_password];
-    $updateUserCondition = ["username" => $username];
+    $updateUserValue = ["password" => $new_password, "is_active" => true];
+    $updateUserCondition = ["id" => $userID];
 
     if (checkRecordExists($pdo, 'user_account', $updateUserCondition)) {
         // Execute the statement
         if (updateDataInTable($pdo, 'user_account', $updateUserValue, $updateUserCondition)) {
+            unset($_SESSION['is_active']);
             echo json_encode(["message" => "Password updated successfully"]);
         } else {
             echo json_encode(["message" => "Failed to update password"]);
