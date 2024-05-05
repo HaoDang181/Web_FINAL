@@ -3,44 +3,49 @@
 // Include your database connection file here
 require_once '../db-connect.php';
 
-function getDataFromTableByCriteria($pdo, $tableName, $criteria)
-{
-    // Prepare the SQL statement to select data from the table based on the criteria
-    $sql = "SELECT * FROM $tableName WHERE ";
+function getDataFromTableByCriteria($pdo, $tableName, $criteria) {
+    // Prepare the SQL statement to select data from the table
+    $sql = "SELECT * FROM $tableName";
 
-    // Append each criterion to the SQL query
-    foreach ($criteria as $columnName => $criteriaValue) {
-        $sql .= "$columnName = :$columnName AND ";
+    // If criteria are provided, add WHERE clause
+    if (!empty($criteria)) {
+        $sql .= " WHERE ";
+
+        // Build the criteria and values array for binding
+        $bindings = [];
+        foreach ($criteria as $columnName => $criteriaValue) {
+            $sql .= "$columnName = :$columnName AND ";
+            $bindings[":$columnName"] = $criteriaValue;
+        }
+
+        // Remove the trailing 'AND' from the SQL query
+        $sql = rtrim($sql, 'AND ');
     }
 
-    // Remove the trailing 'AND' from the SQL query
-    $sql = rtrim($sql, 'AND ');
+    try {
+        // Prepare and execute the SQL statement with PDO using prepared statements
+        $stmt = $pdo->prepare($sql);
+        
+        if (!empty($criteria)) {
+            $stmt->execute($bindings);
+        } else {
+            $stmt->execute();
+        }
 
-    // Prepare and execute the SQL statement with PDO
-    $stmt = $pdo->prepare($sql);
-    foreach ($criteria as $columnName => $criteriaValue) {
-        $stmt->bindParam(":$columnName", $criteriaValue);
+        // Fetch all rows as associative arrays
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Return the data
+        return $data;
+    } catch (PDOException $e) {
+        // Handle any potential errors
+        // You can log the error, throw an exception, or handle it based on your application's requirements
+        // For simplicity, this example just rethrows the exception
+        throw $e;
     }
-    $stmt->execute();
-
-    // Get the number of rows returned
-    $rowCount = $stmt->rowCount();
-
-    // Fetch all rows as associative arrays
-    $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    if ($rowCount === 0) {
-        return null;
-    }
-
-    // If only one row is returned, return it as an object
-    if ($rowCount === 1) {
-        return (object) $data[0];
-    }
-
-    // Return the data
-    return $data;
 }
+
+
 
 function updateDataInTable($pdo, $tableName, $data, $conditions)
 {

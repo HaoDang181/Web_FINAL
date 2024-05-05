@@ -25,6 +25,7 @@ function fetchData() {
         .then(data => {
             viewStaffList(data);
             handleLock();
+            viewStaffDetail();
         })
         .catch(error => {
             console.error('Error:', error);
@@ -34,7 +35,7 @@ function fetchData() {
 
 function viewStaffList(data) {
     let tbody = document.getElementById('data');
-    tbody.innerHTML = ""; // Clear previous data before appending new data
+    tbody.innerHTML = ""; 
     data.forEach(user => {
         let tr = document.createElement('tr');
         let activeStatus = user.is_active === 0 ? "Chưa kích hoạt" : "Đã kích hoạt";
@@ -42,7 +43,7 @@ function viewStaffList(data) {
         tr.innerHTML = `
             <td class="userId">${user.id}</td>
             <td>
-                <img src="" alt="Avatar" width="50" height="50">
+                <img src="/final/src/uploadImage/${user.avatar}" alt="Avatar" width="50" height="50">
             </td>
             <td>${user.fullname}</td>
             <td>${user.email}</td>
@@ -93,4 +94,41 @@ function changeLockStatus(userId, lockStatus) {
             console.error('Error:', error);
             alert('An error occurred while updating lock status. Please try again later.');
         });
+}
+
+function viewStaffDetail() {
+    let detailsButton = document.querySelectorAll('.view');
+    detailsButton.forEach(btn => {
+        btn.addEventListener('click', () => {
+            let tr = btn.closest("tr");
+            let userId = tr.querySelector('.userId').textContent;
+
+            // Fetch data from the PHP script
+            fetch(`http://localhost/final/src/user/view-staff-detail.php?id=${encodeURIComponent(userId)}`)
+                .then(response => {
+                    console.log(response);
+                    // Check if the response is successful
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    // Parse JSON data from the response
+                    return response.json();
+                })
+                .then(data => {
+                    const user = data[0];
+
+                    // Populate modal body with user data
+                    document.getElementById('showImage').src = "/final/src/uploadImage/" + user.avatar
+                    document.getElementById('showName').value = user.fullname;
+                    document.getElementById('showEmail').value = user.email;
+                    document.getElementById('showRole').value = user.role;
+                    document.getElementById('showStatus').value = user.is_active === 0 ? "Chưa kích hoạt" : "Đã kích hoạt";
+                })
+                .catch(error => {
+                    // Handle errors
+                    console.error('There was a problem with the fetch operation:', error);
+                });
+
+        })
+    })
 }

@@ -31,6 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // Store user information in session variables
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['is_active'] = $user['is_active'];
+                $_SESSION['role'] = $role;
 
                 // Redirect to appropriate page based on user's role
                 switch ($role) {

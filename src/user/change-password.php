@@ -8,9 +8,9 @@ if (isset($_SESSION['user_id'], $_POST['password'])) {
     $userID = $_SESSION['user_id'];
     $password = $_POST['password'];
 
-    $new_password = password_hash($password, PASSWORD_BCRYPT);
+    // $new_password = password_hash($password, PASSWORD_BCRYPT);
 
-    $updateUserValue = ["password" => $new_password, "is_active" => true];
+    $updateUserValue = ["password" => $password, "is_active" => true];
     $updateUserCondition = ["id" => $userID];
 
     if (checkRecordExists($pdo, 'user_account', $updateUserCondition)) {

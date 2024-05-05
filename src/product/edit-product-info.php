@@ -1,6 +1,7 @@
 <?php
 // Include the database connection file
 require_once '../db-connect.php';
+require '../common/rest-api.php';
 
 // Check if required parameters are provided
 if (isset($_POST['id'], $_POST['barcode'], $_POST['name'], $_POST['import_price'], $_POST['retail_price'], $_POST['category'])) {

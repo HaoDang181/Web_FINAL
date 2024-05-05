@@ -13,6 +13,7 @@ if (isset($_POST['fullname'], $_POST['email'])) {
     $password = $username;
     $isActive = false;
     $isLock = false;
+    $avatar = "default-avatar.avif";
 
     // Generate a 32-character hexadecimal token
     $token = bin2hex(random_bytes(16));
@@ -22,8 +23,8 @@ if (isset($_POST['fullname'], $_POST['email'])) {
     $expiration = date('Y-m-d H:i:s', time() + 60);
 
     // Prepare the SQL statement to insert a new user account
-    $sql = "INSERT INTO user_account (username, email, password, role, fullname, token, expiration, is_active, is_lock) 
-    VALUES (:username, :email, :password, :role, :fullname, :token, :expiration, :isActive, :isLock)";
+    $sql = "INSERT INTO user_account (username, email, password, role, fullname, token, expiration, is_active, is_lock, avatar) 
+    VALUES (:username, :email, :password, :role, :fullname, :token, :expiration, :isActive, :isLock, :avatar)";
 
     // Prepare and execute the SQL statement with PDO
     $stmt = $pdo->prepare($sql);
@@ -36,6 +37,7 @@ if (isset($_POST['fullname'], $_POST['email'])) {
     $stmt->bindParam(':expiration', $expiration);
     $stmt->bindParam(':isActive', $isActive);
     $stmt->bindParam(':isLock', $isLock);
+    $stmt->bindParam(':avatar', $avatar);
 
     //Set email body
     $mail->Subject = "Test mail";

@@ -2,14 +2,14 @@
 
 require_once '../db-connect.php';
 
-if(isset($_GET['username'])){
-    $username = $_GET['username'];
+if(isset($_GET['id'])){
+    $id = $_GET['id'];
     // Prepare the SQL statement to select all data from the table
-    $sql = "SELECT * FROM user_account WHERE username = :username";
+    $sql = "SELECT * FROM user_account WHERE id = :id";
 
     // Prepare and execute the SQL statement with PDO
     $stmt = $pdo->prepare($sql);
-    $stmt->bindParam(':username', $username);
+    $stmt->bindParam(':id', $id);
 
     $stmt->execute();
     // Check if there are any rows returned
