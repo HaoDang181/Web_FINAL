@@ -14,4 +14,3 @@ if (isset($_GET['phone'])) {
     $customerData = getDataFromTableByCriteria($pdo, 'customer', $condition);
     echo json_encode($customerData);
 }
-?>

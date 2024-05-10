@@ -32,11 +32,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['is_active'] = $user['is_active'];
                 $_SESSION['role'] = $role;
+                $_SESSION['authenticated'] = true;
 
                 // Redirect to appropriate page based on user's role
                 switch ($role) {
                     case 'admin':
-                        header("Location: http://localhost/final/public/template/admin-dashboard.html");
+                        header("Location: http://localhost/final/public/template/admin-dashboard.php");
                         exit;
                     case 'sales':
                         header("Location: http://localhost/final/public/template/sale-dashboard.php");

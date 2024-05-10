@@ -48,7 +48,7 @@ if (isset($_POST['fullname'], $_POST['email'])) {
     if ($stmt->execute()) {
         // If insertion is successful, send email and return success message
         $mail->send();
-        echo json_encode(array("message" => "User account added successfully"));
+        header("Location: /final/public/template/admin-dashboard.php");
     } else {
         // If insertion fails, return error message
         echo json_encode(array("message" => "Failed to add user account"));

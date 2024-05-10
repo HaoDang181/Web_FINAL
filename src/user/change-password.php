@@ -17,7 +17,7 @@ if (isset($_SESSION['user_id'], $_POST['password'])) {
         // Execute the statement
         if (updateDataInTable($pdo, 'user_account', $updateUserValue, $updateUserCondition)) {
             unset($_SESSION['is_active']);
-            echo json_encode(["message" => "Password updated successfully"]);
+            header("Location: /final/public/template/sale-dashboard.php");
         } else {
             echo json_encode(["message" => "Failed to update password"]);
         }

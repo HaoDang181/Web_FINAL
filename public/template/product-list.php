@@ -1,3 +1,9 @@
+<?php
+    session_start();
+    if (!isset($_SESSION["authenticated"])){
+        header("Location: /final/src/login.php");
+    }
+?>
 <!doctype html>
 <html lang="en">
 

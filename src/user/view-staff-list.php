@@ -2,7 +2,7 @@
 require_once '../db-connect.php';
 
 // Prepare the SQL statement to select all data from the table
-$sql = "SELECT * FROM user_account";
+$sql = "SELECT * FROM user_account WHERE role != 'admin'";
 
 // Prepare and execute the SQL statement with PDO
 $stmt = $pdo->query($sql);

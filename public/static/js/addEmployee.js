@@ -14,7 +14,7 @@ function readInfo(avatar, name, email, phone) {
 }
 
 function fetchData() {
-    fetch('http://localhost/final/src/user/view-staff-list.php')
+    fetch('/final/src/user/view-staff-list.php')
         .then(response => {
             if (response.ok) {
                 return response.json();
