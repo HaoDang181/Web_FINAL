@@ -25,7 +25,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $role = $user['role'];
 
             if ($user['is_active'] == false && $token == "") {
-                header("Location: error.php");
+                header("Location: error.php?status=406");
+                exit;
+            } else if($user['is_lock'] == true){
+                header("Location: error.php?status=407");
                 exit;
             } else {
                 // Store user information in session variables
@@ -47,23 +50,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         exit;
                     default:
                         // If the role is not recognized, redirect to a generic page
-                        header("Location: index.php");
+                        header("Location: error.php?status=403");
                         exit;
                 }
             }
         } else {
             // If no rows are returned, it means the provided credentials are invalid
-            header("Location: index.php?error=invalid_credentials");
+            header("Location: error.php?status=403");
             exit;
         }
     } else {
         // If username or password is missing, redirect back to the login page with an error message
-        header("Location: index.php?error=missing_fields");
+        header("Location: error.php?status=403");
         exit;
     }
 } else {
     // If the form is not submitted, redirect back to the login page
-    header("Location: index.php");
+    header("Location: error.php?status=403");
     exit;
 }
 ?>

@@ -3,6 +3,7 @@
 require_once '../db-connect.php';
 require 'send-email.php';
 
+date_default_timezone_set('Asia/Ho_Chi_Minh');
 // Check if required parameters are provided
 if (isset($_POST['fullname'], $_POST['email'])) {
     // Retrieve the values from the POST request
@@ -40,9 +41,9 @@ if (isset($_POST['fullname'], $_POST['email'])) {
     $stmt->bindParam(':avatar', $avatar);
 
     //Set email body
-    $mail->Subject = "Test mail";
-    $mail->Body = "This is some email that contains a login link. Your default username and password are: $username and $password. 
-    <br><br> Please click <a href='http://localhost/final/src/login.php?token=$token'>here</a> to login. This link will expire in 1 minute.";
+    $mail->Subject = "Send login link";
+    $mail->Body = "Đây là mail gửi cho nhân viên đường dẫn đăng nhập vào hệ thống. Tài khoản và mật khẩu mặc định của bạn là: $username và $password. 
+            <br><br> Vui lòng nhấn vào <a href='http://localhost/final/src/login.php?token=$token'>đây</a> để đăng nhập. Đường dẫn này sẽ bị vô hiệu sau 1 phút.";
 
     // Execute the statement
     if ($stmt->execute()) {

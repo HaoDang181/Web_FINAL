@@ -24,14 +24,9 @@ if (isset($_SESSION['user_id'], $_FILES['avatar'])) {
         $updateUserCondition = ["id" => $userID];
 
         if (checkRecordExists($pdo, 'user_account', $updateUserCondition)) {
-            // Execute the statement
-            if (updateDataInTable($pdo, 'user_account', $updateUserValue, $updateUserCondition)) {
-                header("Location: http://localhost/final/public/template/sale-dashboard.php");
-                exit; // Ensure that no further code is executed after redirection
-            } else {
-                header("Location: http://localhost/final/public/template/sale-dashboard.php");
-                exit; // Ensure that no further code is executed after redirection
-            }
+            updateDataInTable($pdo, 'user_account', $updateUserValue, $updateUserCondition);
+            header("Location: /final/public/template/profile.php");
+            exit; // Ensure that no further code is executed after redirection
         } else {
             // If user does not exist, return error message
             echo json_encode(["message" => "User does not exist"]);

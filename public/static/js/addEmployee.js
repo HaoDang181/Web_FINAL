@@ -25,6 +25,7 @@ function fetchData() {
         .then(data => {
             viewStaffList(data);
             handleLock();
+            handleResendEmail();
             viewStaffDetail();
         })
         .catch(error => {
@@ -33,13 +34,40 @@ function fetchData() {
         });
 }
 
+function handleResendEmail() {
+    document.querySelectorAll('.resend').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const tr = btn.closest('tr');
+            const id = tr.querySelector('.userId').textContent
+            fetch("/final/src/account/resend-email.php", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ id })
+            })
+                .then(response => {
+                    if (response.ok) {
+                        window.location.reload();
+                    } else {
+                        throw new Error('Failed to update lock status');
+                    }
+                })
+                
+                .catch(error => {
+                    console.error('Error:', error);
+
+                });
+        })
+    })
+}
+
 function viewStaffList(data) {
     let tbody = document.getElementById('data');
-    tbody.innerHTML = ""; 
+    tbody.innerHTML = "";
     data.forEach(user => {
         let tr = document.createElement('tr');
-        let activeStatus = user.is_active === 0 ? "Chưa kích hoạt" : "Đã kích hoạt";
-        let lockStatus = user.is_lock === 0 ? '<button class="lock open"><ion-icon class="open" name="lock-open-outline"></ion-icon></button>' : '<button class="lock close"><ion-icon class ="close" name="lock-closed-outline"></ion-icon></button>';
+        let activeStatus = user.is_active === 0 ? `<span class="badge rounded-pill text-bg-danger p-2">Chưa kích hoạt</span>` : `<span class="badge rounded-pill text-bg-info p-2">Đã kích hoạt</span>`;
         tr.innerHTML = `
             <td class="userId">${user.id}</td>
             <td>
@@ -49,10 +77,15 @@ function viewStaffList(data) {
             <td>${user.email}</td>
             <td>${activeStatus}</td>
             <td>
-                <button class="view" data-bs-toggle="modal" data-bs-target="#viewStaffInfo">
-                    <ion-icon name="eye-outline"></ion-icon>
-                </button>
-                ${lockStatus}
+                <div>
+                    <button type="button" class="btn btn-lg view" data-bs-toggle="modal" data-bs-target="#viewStaffInfo">
+                        <i class="fa-solid fa-eye"></i> 
+                    </button>
+                    ${user.is_lock === 0 ?
+                '<button type="button" class="btn btn-lg lock open"><i class="fa-solid fa-unlock"></i></button>' :
+                '<button type="button" class="btn btn-lg lock closed"><i class="fa-solid fa-user-lock"></i></button>'}
+                    ${user.is_active === 0 ? '<button type="button" class="btn btn-lg resend"><i class="fa-solid fa-paper-plane"></i></button>' : ''}  
+                </div>
             </td>`;
         tbody.appendChild(tr);
     });
@@ -64,7 +97,7 @@ function handleLock() {
         button.addEventListener('click', () => {
             let tr = button.closest("tr");
             let userId = tr.querySelector('.userId').textContent;
-            let isLocked = button.classList.contains('close');
+            let isLocked = button.classList.contains('closed');
             let newLockStatus = isLocked ? 0 : 1;
             changeLockStatus(userId, newLockStatus);
         });
@@ -73,7 +106,7 @@ function handleLock() {
 
 function changeLockStatus(userId, lockStatus) {
     let data = { id: userId, lock_status: lockStatus };
-    fetch("http://localhost/final/src/user/update-lock-status.php", {
+    fetch("/final/src/user/update-lock-status.php", {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -104,7 +137,7 @@ function viewStaffDetail() {
             let userId = tr.querySelector('.userId').textContent;
 
             // Fetch data from the PHP script
-            fetch(`http://localhost/final/src/user/view-staff-detail.php?id=${encodeURIComponent(userId)}`)
+            fetch(`/final/src/user/view-staff-detail.php?id=${encodeURIComponent(userId)}`)
                 .then(response => {
                     console.log(response);
                     // Check if the response is successful

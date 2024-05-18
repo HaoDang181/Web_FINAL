@@ -35,6 +35,10 @@ function getDataFromTableByCriteria($pdo, $tableName, $criteria) {
         // Fetch all rows as associative arrays
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+        if (empty($data)) {
+            return [];
+        }
+
         // Return the data
         return $data;
     } catch (PDOException $e) {
